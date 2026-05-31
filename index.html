@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Portfolio Project</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f5f2eb;
+    color: #1a1a1a;
+    padding: 2rem 1.5rem 3rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .hero {
+    background: #1a1a2e;
+    color: #fff;
+    border-radius: 16px;
+    padding: 2.5rem 2rem 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    color: #c9b8ff;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .hero p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    max-width: 520px;
+  }
+  .meta-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .meta-label { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.07em; }
+  .meta-value { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.9); margin-top: 2px; }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #1a1a2e;
+  }
+
+  /* AI note box */
+  .ai-note {
+    background: #eee8ff;
+    border-left: 3px solid #7F77DD;
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    font-size: 14px;
+    color: #3C3489;
+    line-height: 1.6;
+  }
+  .ai-note strong { font-weight: 500; }
+
+  /* Week timeline */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+  .day-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem 0.85rem;
+    border: 0.5px solid rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .day-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .day-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 4px; }
+  .day-name { font-weight: 500; font-size: 14px; color: #1a1a2e; margin-bottom: 8px; }
+  .day-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    line-height: 1.6;
+  }
+  .tag-purple { background: #EEEDFE; color: #534AB7; }
+  .tag-teal   { background: #E1F5EE; color: #0F6E56; }
+  .tag-coral  { background: #FAECE7; color: #993C1D; }
+  .tag-amber  { background: #FAEEDA; color: #854F0B; }
+  .tag-blue   { background: #E6F1FB; color: #185FA5; }
+
+  /* Sections list */
+  .sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  .section-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
+    border: 0.5px solid rgba(0,0,0,0.09);
+  }
+  .section-num {
+    font-size: 11px;
+    font-weight: 500;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 6px;
+  }
+  .section-name {
+    font-weight: 500;
+    font-size: 15px;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .ai-use {
+    font-size: 12px;
+    background: #f5f2eb;
+    border-radius: 6px;
+    padding: 5px 8px;
+    color: #666;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  .ai-use span { color: #7F77DD; font-weight: 500; }
+
+  /* Rubric */
+  .rubric {
+    background: #fff;
+    border-radius: 12px;
+    border: 0.5px solid rgba(0,0,0,0.09);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .rubric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 0.5px solid rgba(0,0,0,0.06);
+    font-size: 14px;
+  }
+  .rubric-row:last-child { border-bottom: none; }
+  .rubric-criterion { color: #1a1a2e; }
+  .rubric-pts {
+    font-weight: 500;
+    font-size: 13px;
+    background: #EEEDFE;
+    color: #534AB7;
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+  .rubric-total {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .footer-note {
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    line-height: 1.6;
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">Computer Applications · 9th Grade</div>
+  <h1>End-of-Year<br>AI Portfolio</h1>
+  <p>Students build a digital reflection of their school year using AI as a thinking and design partner — not a shortcut.</p>
+  <div class="meta-row">
+    <div class="meta-item">
+      <span class="meta-label">Duration</span>
+      <span class="meta-value">1 week (5 days)</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Deliverable</span>
+      <span class="meta-value">PDF, Doc, or Slides</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">AI tools</span>
+      <span class="meta-value">Any (free choice)</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Covers</span>
+      <span class="meta-value">All subjects</span>
+    </div>
+  </div>
+</div>
+
+<div class="ai-note">
+  <strong>The AI rule:</strong> AI helps students organize, improve, and design — but every idea must come from them first. Each section must include a short note: <em>"How I used AI here."</em> This keeps the work authentic and makes the process visible.
+</div>
+
+<p class="section-title">Weekly plan</p>
+<div class="week-grid">
+  <div class="day-card">
+    <div class="day-label">Day 1</div>
+    <div class="day-name">Monday</div>
+    <div class="day-tag tag-purple">Intro + About Me</div>
+  </div>
+  <div class="day-card">
+    <div class="day-label">Day 2</div>
+    <div class="day-name">Tuesday</div>
+    <div class="day-tag tag-teal">Academic highlights</div>
+  </div>
+  <div class="day-card">
+    <div class="day-label">Day 3</div>
+    <div class="day-name">Wednesday</div>
+    <div class="day-tag tag-coral">Challenge + Impact</div>
+  </div>
+  <div class="day-card">
+    <div class="day-label">Day 4</div>
+    <div class="day-name">Thursday</div>
+    <div class="day-tag tag-amber">Letter + Design</div>
+  </div>
+  <div class="day-card">
+    <div class="day-label">Day 5</div>
+    <div class="day-name">Friday</div>
+    <div class="day-tag tag-blue">Share out + submit</div>
+  </div>
+</div>
+
+<p class="section-title">Portfolio sections</p>
+<div class="sections-grid">
+
+  <div class="section-card">
+    <div class="section-num">Section 1</div>
+    <div class="section-name">About Me</div>
+    <div class="section-desc">Who they are today vs. who they were at the start of 9th grade. A photo or AI-generated avatar, 3 words that define their year, and one goal for 10th grade.</div>
+    <div class="ai-use"><span>AI:</span> Generate an avatar or write a short bio from bullet points.</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-num">Section 2</div>
+    <div class="section-name">Academic highlights</div>
+    <div class="section-desc">One highlight per subject (or their favorites). What was the most important thing they learned? What work are they proud of?</div>
+    <div class="ai-use"><span>AI:</span> Summarize or improve written reflections.</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-num">Section 3</div>
+    <div class="section-name">Biggest challenge</div>
+    <div class="section-desc">One hard moment from the year — academic or personal. What happened, how did they handle it, and what did they learn from it?</div>
+    <div class="ai-use"><span>AI:</span> Use as a writing coach to get unstuck or sharpen the story.</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-num">Section 4</div>
+    <div class="section-name">My impact</div>
+    <div class="section-desc">How did they contribute to their class, school, or community this year? Can be small — helping a classmate counts.</div>
+    <div class="ai-use"><span>AI:</span> Expand a short idea into a full paragraph.</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-num">Section 5</div>
+    <div class="section-name">Letter to future me</div>
+    <div class="section-desc">A letter addressed to their 12th grade self. Predictions, advice, and things they never want to forget about this year.</div>
+    <div class="ai-use"><span>AI:</span> Format as a formal letter while keeping their own voice.</div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-num">Section 6</div>
+    <div class="section-name">AI reflection</div>
+    <div class="section-desc">The most important section for Comp Apps. What tools did they use? Where did AI help and where did it fall short? What did they learn about working <em>with</em> AI?</div>
+    <div class="ai-use"><span>AI:</span> Ironically, they can discuss this one with AI too.</div>
+  </div>
+
+</div>
+
+<p class="section-title">Grading rubric</p>
+<div class="rubric">
+  <div class="rubric-row">
+    <span class="rubric-criterion">All 6 sections completed</span>
+    <span class="rubric-pts">30 pts</span>
+  </div>
+  <div class="rubric-row">
+    <span class="rubric-criterion">Reflections are genuine and detailed</span>
+    <span class="rubric-pts">30 pts</span>
+  </div>
+  <div class="rubric-row">
+    <span class="rubric-criterion">AI use is documented and intentional</span>
+    <span class="rubric-pts">20 pts</span>
+  </div>
+  <div class="rubric-row">
+    <span class="rubric-criterion">Clean, organized design</span>
+    <span class="rubric-pts">20 pts</span>
+  </div>
+  <div class="rubric-total">
+    <span>Total</span>
+    <span>100 pts</span>
+  </div>
+</div>
+
+<p class="footer-note">
+  The letters from Section 5 can be saved and "delivered" at graduation — a nice touch if you want to keep the tradition alive. 🎓
+</p>
+
+</body>
+</html>
